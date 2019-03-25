@@ -21,6 +21,9 @@ type Config struct {
 }
 
 func (c Config) ParseHtml(data interface{}) error {
+	if c.Html != "" {
+		return errors.New("set html before using it")
+	}
 	tmpl, err := template.New("test").Parse(c.Html)
 	buf := &bytes.Buffer{}
 	if err != nil {
@@ -55,11 +58,9 @@ func (c Config) Send(reciver ...string) (resp string, id string, err error) {
 	var body = strings.TrimSpace(c.Html)
 	if subject == "" {
 		return "", "", errors.New("subcjet is empty")
-		return
 	}
 	if body == "" {
 		return "", "", errors.New("body html is empty")
-		return
 	}
 	for _, v := range reciver {
 		var valid, err = c.Validation(v)
