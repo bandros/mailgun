@@ -71,11 +71,14 @@ func (c Config) Send(reciver ...string) (resp string, id string, err error) {
 	var mg = mailgun.NewMailgun(c.Domain, c.PrivateKey)
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
 	defer cancel()
-	message := mg.NewMessage(c.Sender, c.Subject, c.Html,reciver[0])
+	message := mg.NewMessage(c.Sender, c.Subject, "", reciver[0])
 	for i, v := range reciver {
-		if i == 0 {continue}
+		if i == 0 {
+			continue
+		}
 		message.AddBCC(v)
 	}
+	message.SetHtml(c.Html)
 	// Send the message	with a 10 second timeout
 	resp, id, err = mg.Send(ctx, message)
 	return resp, id, err
