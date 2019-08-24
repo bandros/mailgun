@@ -62,12 +62,12 @@ func (c Config) Send(reciver ...string) (resp string, id string, err error) {
 	if body == "" {
 		return "", "", errors.New("body html is empty")
 	}
-	for _, v := range reciver {
-		var valid, err = c.Validation(v)
-		if !valid || err != nil {
-			return "", "", errors.New("invalid e-mail :" + v)
-		}
-	}
+	//for _, v := range reciver {
+	//	var valid, err = c.Validation(v)
+	//	if !valid || err != nil {
+	//		return "", "", errors.New("invalid e-mail :" + v)
+	//	}
+	//}
 	var mg = mailgun.NewMailgun(c.Domain, c.PrivateKey)
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
 	defer cancel()
